@@ -206,7 +206,7 @@ public class AudioView extends BaseAudioView implements View.OnClickListener {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         mIsAttached = true;
-        if (!mIsPrepared)
+        if (!mIsPrepared && !isInEditMode())
             initMediaPlayer();
     }
 
