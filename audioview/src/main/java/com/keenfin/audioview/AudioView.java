@@ -7,6 +7,7 @@
 
 package com.keenfin.audioview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -91,18 +92,20 @@ public class AudioView extends BaseAudioView implements View.OnClickListener {
         final Runnable seekBarUpdateTask = new Runnable() {
             @Override
             public void run() {
-                if (mIsPrepared) {
-                    int current = mMediaPlayer.getCurrentPosition();
-                    if (mProgress.getProgress() < current) {
-                        mProgress.setProgress(current);
-                        if (mTotalTime != null)
-                            mTime.setText(formatTime(mMediaPlayer.getCurrentPosition()));
-                        else
-                            mTime.setText(getTrackTime());
+                Activity act = (Activity) getContext();
+                if (!act.isChangingConfigurations()) {
+                    if (mIsPrepared) {
+                        int current = mMediaPlayer.getCurrentPosition();
+                        if (mProgress.getProgress() < current) {
+                            mProgress.setProgress(current);
+                            if (mTotalTime != null)
+                                mTime.setText(formatTime(mMediaPlayer.getCurrentPosition()));
+                            else
+                                mTime.setText(getTrackTime());
+                        }
                     }
+                    mHandler.postDelayed(this, mProgressDelay);
                 }
-
-                mHandler.postDelayed(this, mProgressDelay);
             }
         };
 
